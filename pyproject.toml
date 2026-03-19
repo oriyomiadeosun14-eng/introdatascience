@@ -9,4 +9,5 @@ dependencies = [
     "marimo>=0.19.10",
     "polars>=0.20.0",
     "plotly>=5.18.0",
+    "pyzmq>=27.1.0",
 ]

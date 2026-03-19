@@ -8,7 +8,7 @@
 
 import marimo
 
-__generated_with = "0.19.6"
+__generated_with = "0.20.4"
 app = marimo.App(width="medium")
 
 
@@ -46,10 +46,10 @@ def _():
     # - height: your height in meters as a float
     # - is_student: whether you're a student (True or False)
 
-    name = "YourName"  # Replace with your name
-    age = 0  # Replace with your age
-    height = 0.0  # Replace with your height
-    is_student = False  # Change if needed
+    name = "Oriyomi"  # Replace with your name
+    age = 25  # Replace with your age
+    height = 1.7  # Replace with your height
+    is_student = True  # Change if needed
 
     # Print them out
     print(f"Name: {name}")
@@ -75,10 +75,10 @@ def _():
     # 3. 100 divided by 7 (keep decimals)
     # 4. 2 to the power of 10
 
-    sum_result = 0  # TODO
-    product = 0  # TODO
-    division = 0  # TODO
-    power = 0  # TODO
+    sum_result = 45 + 67  # TODO
+    product = 12 * 8  # TODO
+    division = 100 / 7  # TODO
+    power = 2 ** 10  # TODO
 
     print(f"Sum: {sum_result}")
     print(f"Product: {product}")
@@ -98,19 +98,20 @@ def _(mo):
 @app.cell
 def _():
     # TODO: Create a list of your 5 favorite foods
-    favorite_foods = []  # Add your foods here
+    favorite_foods = ["Amala", "Pounded Yam", "Jollof Rice", "White Soup", "Fufu"]  # Add your foods here
 
     # TODO: Print the first food
-    print(f"First food: ???")  # Fix this line
+    print(f"First food: {favorite_foods[0]}")  # Fix this line
 
     # TODO: Print the last food
-    print(f"Last food: ???")  # Fix this line
+    print(f"Last food: {favorite_foods[4]}")  # Fix this line
 
     # TODO: Add another food to the list
     # (use the append method)
-
+    favorite_foods.append("Asaro")
+    print(f"Additional food: {favorite_foods}")
     # TODO: Print the length of the list
-    print(f"Number of foods: ???")  # Fix this line
+    print(f"Number of foods: {len(favorite_foods)}")  # Fix this line
     return
 
 
@@ -131,17 +132,20 @@ def _():
     # - pages: number of pages (integer)
 
     book = {
-        # Add your key-value pairs here
+        "title": "The monk who sold his Ferrari",
+        "author": "Ninety Living large",
+        "year": 2026,
+        "pages": 90,
     }
 
     # TODO: Print the book title and author
-    print(f"Title: ???")  # Fix this line
-    print(f"Author: ???")  # Fix this line
+    print(f"Title: {book["title"]}")  # Fix this line
+    print(f"Author: {book["author"]}")  # Fix this line
 
     # TODO: Add a new key "genre" with a value
-
+    book["genre"] = "Personal Development"  
     # TODO: Update the year to a different value
-
+    book ["year"] = 2022
     print("\nUpdated book:", book)
     return
 
@@ -162,9 +166,18 @@ def _():
     # - If temp > 10: "It's cool"
     # - Otherwise: "It's cold!"
 
-    temperature = 25  # Try changing this value
+    temperature = 90  # Try changing this value
 
     # Write your if/elif/else statements here
+
+    if temperature > 30:
+        print("It is hot")
+    elif temperature >20:
+        print("It is warm")
+    elif temperature > 10:
+        print("It is cool")
+    else:
+        print("It is cold")
     return
 
 
@@ -182,6 +195,8 @@ def _():
     numbers = [2, 4, 6, 8, 10]
 
     # Write your loop here
+    for num in numbers:
+        print(num * 3)
     return
 
 
@@ -190,9 +205,12 @@ def _():
     # TODO: Use a for loop to calculate the sum of all numbers from 1 to 100
     total = 0
 
-    # Write your loop here
 
+    # Write your loop here
+    for i in range(1,101):
+        total += i
     print(f"Sum of 1 to 100: {total}")
+
     return
 
 
@@ -210,9 +228,12 @@ def _():
     # Use a list comprehension!
 
     squares = []  # Use list comprehension here
-
+    for x in range(1,11):
+        squares.append(x**2)
     print(f"Squares: {squares}")
     # Expected: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+
     return
 
 
@@ -223,7 +244,8 @@ def _():
 
     all_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     even_numbers = []  # Use list comprehension here
-
+    for even in range(1,7):
+        even_numbers.append(even*2)
     print(f"Even numbers: {even_numbers}")
     # Expected: [2, 4, 6, 8, 10, 12]
     return
@@ -244,9 +266,9 @@ def _():
 
     def greet(name):
         pass  # Replace with your code
-
+        return f"Hello {name}"
     # Test your function
-    print(greet("Alice"))
+    print(greet("Ninety"))
     print(greet("Bob"))
     return
 
@@ -266,8 +288,8 @@ def _():
     # It should return width * height
 
     def calculate_area(width, height):
-        pass  # Replace with your code
-
+        return width * height
+    
     # Test your function
     area1 = calculate_area(5, 10)
     area2 = calculate_area(7, 3)
@@ -295,16 +317,20 @@ def _():
 
     def analyze_numbers(numbers):
         # Write your code here
+        number_of_items = len(numbers)
+        sum_of_items = sum(numbers)
+        average_of_items = sum_of_items / number_of_items
         result = {
-            "count": 0,
-            "sum": 0,
-            "average": 0
+            "count": number_of_items,
+            "sum": sum_of_items,
+            "average": average_of_items
         }
         return result
 
     # Test your function
     test_numbers = [10, 20, 30, 40, 50]
-    analysis = analyze_numbers(test_numbers)
+    test_numbers_two = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+    analysis = analyze_numbers(test_numbers_two)
 
     print("Analysis of [10, 20, 30, 40, 50]:")
     for key, value in analysis.items():
@@ -339,6 +365,7 @@ def _(mo):
 @app.cell
 def _():
     import marimo as mo
+
     return (mo,)
 
 
