@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.6"
+__generated_with = "0.20.4"
 app = marimo.App(width="medium")
 
 
@@ -36,7 +36,7 @@ def _(mo):
 @app.cell
 def _():
     # Variables store data
-    name = "Alice"
+    name = "Ninety"
     age = 25
     height = 1.65  # in meters
     is_student = True
@@ -66,7 +66,7 @@ def _(mo):
 @app.cell
 def _():
     # Check types
-    print(type("Hello"))  # str
+    print(type("This is a string"))  # str
     print(type(42))       # int
     print(type(3.14))     # float
     print(type(True))     # bool
@@ -100,8 +100,8 @@ def _():
 @app.cell
 def _():
     # String operations
-    first_name = "Data"
-    last_name = "Science"
+    first_name = "Oriyomi"
+    last_name = "Adeosun"
 
     full_name = first_name + " " + last_name  # Concatenation
     print(f"Full name: {full_name}")
@@ -129,7 +129,7 @@ def _():
     print(f"Last fruit: {fruits[-1]}")
 
     # Add to list
-    fruits.append("elderberry")
+    fruits.append("orange")
     print("After append:", fruits)
 
     # List length
@@ -221,6 +221,13 @@ def _(fruits):
     print("Fruits in my basket:")
     for fruit in fruits:
         print(f"  - {fruit}")
+
+    def calculate_area(width,height):
+        return width * height
+        print(calculate_area)
+
+    calculate_area(5,4 )
+
     return
 
 
@@ -385,6 +392,7 @@ def _(mo):
 @app.cell
 def _():
     import marimo as mo
+
     return (mo,)
 
 

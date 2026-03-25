@@ -210,7 +210,6 @@ def _():
     for i in range(1,101):
         total += i
     print(f"Sum of 1 to 100: {total}")
-
     return
 
 
@@ -232,7 +231,6 @@ def _():
         squares.append(x**2)
     print(f"Squares: {squares}")
     # Expected: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
-
 
     return
 
@@ -289,7 +287,7 @@ def _():
 
     def calculate_area(width, height):
         return width * height
-    
+
     # Test your function
     area1 = calculate_area(5, 10)
     area2 = calculate_area(7, 3)
@@ -330,7 +328,7 @@ def _():
     # Test your function
     test_numbers = [10, 20, 30, 40, 50]
     test_numbers_two = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-    analysis = analyze_numbers(test_numbers_two)
+    analysis = analyze_numbers(test_numbers)
 
     print("Analysis of [10, 20, 30, 40, 50]:")
     for key, value in analysis.items():
