@@ -65,7 +65,8 @@ def _(students):
     row_column = students.shape[0], students.shape[1]
     column_names = students.columns
     data_types = students.dtypes
-    print(f"Number of rows: {row_column[0]}, Number of columns: {row_column[1]}")
+    print(
+        f"Number of rows: {row_column[0]}, Number of columns: {row_column[1]}")
     print(f"Column names: {column_names}")
     print(f"Data types: {data_types}")
     # - How many rows and columns?
@@ -88,9 +89,11 @@ def _(mo):
 def _(pl, students):
     # TODO: Filter to find students who scored above 85 on their test
 
-    high_scorers = students.filter(pl.col("test_score") > 85 )  # Use students.filter(...)
+    high_scorers = students.filter(
+        pl.col("test_score") > 85)  # Use students.filter(...)
 
-    print(f"Number of high scorers: {len(high_scorers) if high_scorers is not None else 0}")
+    print(
+        f"Number of high scorers: {len(high_scorers) if high_scorers is not None else 0}")
     return
 
 
@@ -99,10 +102,10 @@ def _(pl, students):
     # TODO: Filter to find students in grade_level 10 with attendance_rate > 90%
 
     grade_10_good_attendance = students.filter(
-        (pl.col("grade_level" ) == 10) &
+        (pl.col("grade_level") == 10) &
         (pl.col("attendance_rate") > 90)
     )
-      # Use multiple conditions with &
+    # Use multiple conditions with &
     grade_10_good_attendance
     return
 
@@ -120,7 +123,8 @@ def _(students):
     # TODO: Select only the name, grade_level, and test_score columns
     from operator import sub
 
-    subset = students.select(["name", "grade_level", "test_score"])  # Use students.select(...)
+    # Use students.select(...)
+    subset = students.select(["name", "grade_level", "test_score"])
 
     subset.head()
     return
@@ -136,18 +140,17 @@ def _(pl, students):
 
     # Hint: Use pl.when().then().otherwise() chains
 
-
-
     students_categorized = students.with_columns(
-        pl.when(pl.col("test_score")>=90)
+        pl.when(pl.col("test_score") >= 90)
         .then(pl.lit("Excellent"))
-        .when(pl.col("test_score")>=75)
+        .when(pl.col("test_score") >= 75)
         .then(pl.lit("Good"))
-        .when(pl.col("test_score")<75)
+        .when(pl.col("test_score") < 75)
         .then(pl.lit("Needs Improvement"))
         .otherwise(pl.lit("Unknown")).alias("performance_category")
     )
-    students_categorized.select(["name", "test_score", "performance_category"]).head()
+    students_categorized.select(
+        ["name", "test_score", "performance_category"]).head()
     return
 
 
@@ -160,16 +163,14 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(pl):
     # TODO: Load the sales.json file
     # The file is at: ../data/raw/sales.json
 
-    import polars as pl
+    # import polars as pl
 
-    sales=pl.read_json("../data/raw/sales.json")
-
-
-    return pl, sales
+    sales = pl.read_json("../data/raw/sales.json")
+    return (sales,)
 
 
 @app.cell
@@ -187,7 +188,53 @@ def _(sales):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## Part 5: Date Operations
+    ## Part 5: Aggregations and Grouping
+    """)
+    return
+
+
+@app.cell
+def _(pl, sales):
+    # TODO: Calculate total sales by product_category
+    # Sum up the total_amount for each category
+    # Sort by total sales descending
+
+    category_sales = sales.group_by("product_category").agg([
+        pl.sum("total_amount").alias("total_sales")
+    ]).sort("total_sales", descending=True)
+
+    category_sales
+    return
+
+
+@app.cell
+def _(pl, sales):
+    # TODO: Find the average transaction amount by payment_method
+
+    avg_by_payment = sales.group_by("payment_method").agg([
+        pl.mean("total_amount").alias("avg_transaction_amount")
+    ])
+    avg_by_payment
+    return
+
+
+@app.cell
+def _(pl, sales):
+    # TODO: Count how many transactions each region had
+    # Also calculate the total revenue per region
+
+    region_summary =  sales.group_by("region").agg([
+        pl.len().alias("transaction_count"),
+        pl.sum("total_amount").alias("total_revenue")
+    ])
+    region_summary
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Part 6: Date Operations
     """)
     return
 
@@ -209,7 +256,7 @@ def _(pl, sales):
     )
     sales_with_month.select(["date", "month"]).head()
 
-     # Use with_columns() and pl.col().str.to_date()
+    # Use with_columns() and pl.col().str.to_date()
     return (sales_with_month,)
 
 
@@ -219,15 +266,13 @@ def _(pl, sales_with_month):
     # Show which month had the highest revenue
 
     monthly_sales = (
-    	sales_with_month
-    	.group_by("month")
-    	.agg(
-    		pl.col("total_amount").sum().alias("total_revenue")
-    	)
-    	.sort("total_revenue", descending=True)
+        sales_with_month
+        .group_by("month")
+        .agg(
+            pl.col("total_amount").sum().alias("total_revenue")
+        )
+        .sort("total_revenue", descending=True)
     )
-
-
     # Display the results
     monthly_sales
     return
@@ -245,6 +290,7 @@ def _(mo):
     - ✅ Loading CSV and JSON data with Polars
     - ✅ Filtering and selecting data
     - ✅ Creating calculated columns
+    - ✅ Grouping and aggregating
     - ✅ Date operations
 
     **What's next?**

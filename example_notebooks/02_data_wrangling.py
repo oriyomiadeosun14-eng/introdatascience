@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.6"
+__generated_with = "0.20.4"
 app = marimo.App(width="medium")
 
 
@@ -164,11 +164,12 @@ def _(pl, students):
 def _(pl, students):
     # Multiple conditions with & (and)
     good_attendance_high_score = students.filter(
-        (pl.col("attendance_rate") >= 90) & 
+        (pl.col("attendance_rate") >= 90) &
         (pl.col("test_score") > 80)
     )
 
-    print(f"Students with good attendance AND high scores: {good_attendance_high_score.shape[0]}")
+    print(
+        f"Students with good attendance AND high scores: {good_attendance_high_score.shape[0]}")
     good_attendance_high_score
     return
 
@@ -204,7 +205,8 @@ def _(students):
 @app.cell
 def _(students):
     # Sort by multiple columns
-    sorted_multi = students.sort(["grade_level", "test_score"], descending=[False, True])
+    sorted_multi = students.sort(
+        ["grade_level", "test_score"], descending=[False, True])
     sorted_multi.head(10)
     return
 
@@ -273,10 +275,12 @@ def _(pl, students):
 def _(pl, students):
     # Fill missing values
     students_filled = students.with_columns([
-        pl.col("test_score").fill_null(pl.col("test_score").mean()).alias("test_score_filled")
+        pl.col("test_score").fill_null(
+            pl.col("test_score").mean()).alias("test_score_filled")
     ])
 
-    students_filled.select(["name", "test_score", "test_score_filled"]).head(10)
+    students_filled.select(
+        ["name", "test_score", "test_score_filled"]).head(10)
     return
 
 
@@ -293,7 +297,101 @@ def _(students):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 8. Working with Dates
+    ## 8. Grouping and Aggregation
+    """)
+    return
+
+
+@app.cell
+def _(pl, students):
+    # Group by and count
+    by_grade = students.group_by("grade_level").agg([
+        pl.len().alias("student_count")
+    ]).sort("grade_level")
+
+    by_grade
+    return
+
+
+@app.cell
+def _(pl, students):
+    # Multiple aggregations
+    by_subject = students.group_by("subject").agg([
+        pl.len().alias("count"),
+        pl.col("test_score").mean().alias("avg_score"),
+        pl.col("test_score").max().alias("max_score"),
+        pl.col("attendance_rate").mean().alias("avg_attendance")
+    ]).sort("avg_score", descending=True)
+
+    by_subject
+    return
+
+
+@app.cell
+def _(pl, sales):
+    # Real-world example: Sales by category
+    category_sales = sales.group_by("product_category").agg([
+        pl.len().alias("transaction_count"),
+        pl.col("total_amount").sum().alias("total_revenue"),
+        pl.col("total_amount").mean().alias("avg_transaction"),
+        pl.col("quantity").sum().alias("total_quantity")
+    ]).sort("total_revenue", descending=True)
+
+    category_sales
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 8. Grouping and Aggregation
+    """)
+    return
+
+
+@app.cell
+def _(pl, students):
+    # Group by and count
+    by_grade = students.group_by("grade_level").agg([
+        pl.len().alias("student_count")
+    ]).sort("grade_level")
+
+    by_grade
+    return
+
+
+@app.cell
+def _(pl, students):
+    # Multiple aggregations
+    by_subject = students.group_by("subject").agg([
+        pl.len().alias("count"),
+        pl.col("test_score").mean().alias("avg_score"),
+        pl.col("test_score").max().alias("max_score"),
+        pl.col("attendance_rate").mean().alias("avg_attendance")
+    ]).sort("avg_score", descending=True)
+
+    by_subject
+    return
+
+
+@app.cell
+def _(pl, sales):
+    # Real-world example: Sales by category
+    category_sales = sales.group_by("product_category").agg([
+        pl.len().alias("transaction_count"),
+        pl.col("total_amount").sum().alias("total_revenue"),
+        pl.col("total_amount").mean().alias("avg_transaction"),
+        pl.col("quantity").sum().alias("total_quantity")
+    ]).sort("total_revenue", descending=True)
+
+    category_sales
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 9. Working with Dates
     """)
     return
 
@@ -328,7 +426,7 @@ def _(pl, sales_with_date):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 9. Joining DataFrames
+    ## 10. Joining DataFrames
     """)
     return
 
@@ -355,14 +453,15 @@ def _(grade_info, students):
         how="left"
     )
 
-    students_enriched.select(["name", "grade_level", "grade_name", "school_level"]).head()
+    students_enriched.select(
+        ["name", "grade_level", "grade_name", "school_level"]).head()
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 10. Chaining Operations
+    ## 11. Chaining Operations
     """)
     return
 
@@ -378,7 +477,7 @@ def _(pl, students):
         ])
         .group_by("subject")
         .agg([
-            pl.count().alias("total_students"),
+            pl.len().alias("total_students"),
             pl.col("high_performer").sum().alias("high_performers"),
             pl.col("test_score").mean().alias("avg_score")
         ])
@@ -397,7 +496,7 @@ def _(pl, students):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 11. Data Cleaning Example
+    ## 12. Data Cleaning Example
 
     Let's clean the sales data which has some quality issues:
     """)
@@ -417,13 +516,15 @@ def _(pl, sales):
         ])
         # Filter out invalid transactions
         .filter(
-            (pl.col("quantity") > 0) & 
+            (pl.col("quantity") > 0) &
             (pl.col("total_amount") > 0)
         )
         # Add derived columns
         .with_columns([
-            pl.col("date").str.strptime(pl.Date, "%Y-%m-%d").alias("date_parsed"),
-            (pl.col("total_amount") / pl.col("quantity")).round(2).alias("calculated_unit_price")
+            pl.col("date").str.strptime(
+                pl.Date, "%Y-%m-%d").alias("date_parsed"),
+            (pl.col("total_amount") / pl.col("quantity")
+             ).round(2).alias("calculated_unit_price")
         ])
         .sort("date_parsed")
     )
@@ -449,6 +550,7 @@ def _(mo):
     - ✅ Filter and select data
     - ✅ Create new calculated columns
     - ✅ Handle missing values
+    - ✅ Group and aggregate data
     - ✅ Work with dates
     - ✅ Join multiple datasets
     - ✅ Chain operations for complex analysis
@@ -461,6 +563,7 @@ def _(mo):
 @app.cell
 def _():
     import marimo as mo
+
     return (mo,)
 
 
