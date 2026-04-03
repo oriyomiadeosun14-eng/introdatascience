@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.6"
+__generated_with = "0.20.4"
 app = marimo.App(width="medium")
 
 
@@ -117,6 +117,9 @@ def _(pl, px, students):
 
 @app.cell
 def _(pl, px, sales):
+
+
+
     # Sales by category
     category_sales = sales.group_by("product_category").agg([
         pl.col("total_amount").sum().alias("revenue")
@@ -226,6 +229,7 @@ def _(mo):
 @app.cell
 def _(pl, px, students):
     # Create data
+    from click.core import F
     by_grade = students.group_by("grade_level").agg([
         pl.col("test_score").mean().alias("avg_score")
     ]).sort("grade_level")
@@ -326,7 +330,7 @@ def _(pl, px, sales):
         values="revenue",
         names="region",
         title="Sales Distribution by Region",
-        hole=0.3  # Make it a donut chart
+        hole= 0.3 # Make it a donut chart
     )
 
     fig11.update_traces(textinfo='percent+label')
@@ -427,6 +431,7 @@ def _(mo):
 @app.cell
 def _():
     import marimo as mo
+
     return (mo,)
 
 

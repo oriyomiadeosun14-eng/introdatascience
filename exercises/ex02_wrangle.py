@@ -163,14 +163,15 @@ def _(mo):
 
 
 @app.cell
-def _(pl):
+def _():
     # TODO: Load the sales.json file
     # The file is at: ../data/raw/sales.json
 
-    # import polars as pl
+    import polars as pl
 
     sales = pl.read_json("../data/raw/sales.json")
-    return (sales,)
+    sales.head()
+    return pl, sales
 
 
 @app.cell
